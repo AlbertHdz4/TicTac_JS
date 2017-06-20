@@ -162,7 +162,8 @@ h2 {
   }
 
   .hide {
-    z-index: -1;
+    display: none;
+    background: none;
   }
 
   .header > h1 {
