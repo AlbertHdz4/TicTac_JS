@@ -13,7 +13,7 @@
 <body>
   <header class="header" id="header">
     <h1>Tic Tac Toe</h1>
-    <button type="button" name="button" onClick="initialGame()" id="button">Play!</button>
+    <button type="button" name="button" onClick="initialGame()">Play!</button>
     <h2>Developed By Alberto Hernández</h2>
   </header>
   <div class="content" id="content">
@@ -38,7 +38,7 @@
   </div>
   <div class="info">
     <p class="player1">
-      <span id="player1">Player 1</span>
+      <span id="player1">Player X</span>
       <span id="score1">0</span>
     </p>
     <p class="tie">
@@ -46,13 +46,13 @@
       <span id="score2">0</span>
     </p>
     <p class="player2">
-      <span id="player2">Player 2</span>
+      <span id="player2">Player O</span>
       <span id="score3">0</span>
     </p>
   </div>
   <script src="sweetalert.min.js"></script>
   <script>
-    let listener = document.getElementById("button").addEventListener("click", initialGame);
+    // let listener = document.getElementById("button").addEventListener("click", initialGame);
     let header = document.getElementById('header');
     let p1 = document.getElementById('player1');
     let p2 = document.getElementById('player2');
@@ -101,11 +101,11 @@
       cell[integer] = 1;
       element.innerHTML = "<img src='img/X.png' class='drawX'>";
       if(somebodyWins(cell)){
-        setTimeout(() => alertShowed('Ganas jugador X'), 500);
+        setTimeout(() => alertShowed('Player X wins'), 400);
         score1 += 1;
         pScore1.innerHTML = score1
       } else if(theEnd(cell)){
-        alertShowed('Esto es un empate :D');
+        alertShowed('It is a tie! :D');
       }
       player1 = !player1;
     }
@@ -116,9 +116,9 @@
       if(somebodyWins(cell)){
         score2 += 1;
         pScore2.innerHTML = score2;
-        setTimeout(() => alertShowed('Ganas jugador O'), 500);
+        setTimeout(() => alertShowed('Player O Wins'), 400);
       } else if(theEnd(cell)){
-        alertShowed('Esto es un empate :D');
+        alertShowed('It is a tie! :D');
       }
       player1 = !player1;
     }
@@ -126,9 +126,9 @@
     function alertShowed(str) {
       swal({
         title: `${str}`,
-        text: '¿Quieres jugar otro juego?',
+        text: 'Would you like to play again?',
         showConfirmButton: true,
-        confirmButtonText: "Sí",
+        confirmButtonText: "Yes",
       }, (isConfirm) => {
         if(isConfirm) initialGame()
       })
