@@ -101,17 +101,7 @@ h2 {
   border: 2px solid white;
 }
 
-.drawX {
-  animation: appearXO 0.3s;
-  position: absolute;
-  right: 10%;
-  top: 10%;
-  width: 80%;
-  margin: 0%, 10%;
-  transition: 0.5s;
-}
-
-.drawO {
+.drawX, .drawO {
   animation: appearXO 0.3s;
   transform: scale(1);
   position: absolute;
@@ -157,5 +147,36 @@ h2 {
   }
   90% {
     transform: scale(1.2);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    width: 90vw;
+    height: 90vh;
+    margin: 5vh 5vw;
+    text-align: center;
+  }
+
+  .header > h1 {
+    font-size: 1em;
+  }
+
+  .drawX, .drawO {
+    position: absolute;
+    right: 9%;
+    top: 22%;
+  }
+
+  .info {
+    width: 80vw;
+    position: absolute;
+    bottom: 45px;
+  }
+
+  .info > p {
+    font-size: 0.6em;
+    width: 28%;
+    margin: 0;
   }
 }
