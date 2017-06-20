@@ -31,7 +31,7 @@ h1 {
   font-size: 2em;
   margin-bottom: 0;
 }
-/*
+
 button {
   color: white;
   background: none;
@@ -43,7 +43,7 @@ button {
   cursor: pointer;
   animation: appear 2.5s;
   transition: 0.3s;
-}*/
+}
 
 button:hover {
   background: white;
@@ -155,11 +155,19 @@ h2 {
     width: 90vw;
     height: 90vh;
     margin: 5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
+  }
+
+  .hide {
+    display: none;
   }
 
   .header > h1 {
     font-size: 1em;
+    margin-bottom: 40px;
   }
 
   .content {
