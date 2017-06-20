@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="height=device-height">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/tictac.css">
+  <link rel="stylesheet" type="text/css" href="sweetalert.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <title>Tic Tac Toe</title>
+</head>
+<body>
+  <header class="header" id="header">
+    <h1>Tic Tac Toe</h1>
+    <button type="button" name="button" onclick="initialGame()">Play!</button>
+    <h2>Developed By Alberto Hernández</h2>
+  </header>
+  <div class="content" id="content">
+    <div class="tictac">
+      <div class="row1">
+        <div class="casilla0" id="casilla0" onclick="play(0)"></div>
+        <div class="casilla1" id="casilla1" onclick="play(1)"></div>
+        <div class="casilla2" id="casilla2" onclick="play(2)"></div>
+      </div>
+      <div class="row2">
+        <div class="casilla3" id="casilla3" onclick="play(3)"></div>
+        <div class="casilla4" id="casilla4" onclick="play(4)"></div>
+        <div class="casilla5" id="casilla5" onclick="play(5)"></div>
+      </div>
+      <div class="row3">
+        <div class="casilla6" id="casilla6" onclick="play(6)"></div>
+        <div class="casilla7" id="casilla7" onclick="play(7)"></div>
+        <div class="casilla8" id="casilla8" onclick="play(8)"></div>
+      </div>
+    </div>
+    <!-- <button type="button" name="button" onclick="starGame(true)" id="CPUPlayers"><p id="textPlayers">Two Players</p></button> -->
+  </div>
+  <div class="info">
+    <p>
+      <span id="player1">Player 1</span>
+      <span id="score1">0</span>
+    </p>
+    <p class="tie">
+      <span id="tie">Tie</span>
+      <span id="score2">0</span>
+    </p>
+    <p class="player2">
+      <span id="player2">Player 2</span>
+      <span id="score3">0</span>
+    </p>
+  </div>
+  <script src="sweetalert.min.js"></script>
+  <script>
+    let header = document.getElementById('header');
+    let p1 = document.getElementById('player1');
+    let p2 = document.getElementById('player2');
+    let pScore1 = document.getElementById('score1');
+    let pScore2 = document.getElementById('score3');
+    let tieScore = document.getElementById('score2');
+    let cell = new Array(8);
+    let score1 = 0, score2 = 0, score = 0;
+    let player1;
+    let element;
+
+    function initialGame() {
+      player1 = true;
+      header.classList.add("hide");
+      shadowClassFirstPlayer();
+      for(let i = 0; i < 9; i++) {
+        cell[i] = 0;
+        document.getElementById(`casilla${i}`).innerHTML = "<img src='' class=''>";
+      }
+    }
+
+    function play(integer) {
+      element = document.getElementById(`casilla${integer}`);
+      if(checkCell(integer, cell)) {
+        if(player1) {
+          drawX(integer);
+          shadowClassSecondPlayer();
+        } else {
+          drawO(integer);
+          shadowClassFirstPlayer();
+        }
+      }
+    }
+
+    function shadowClassFirstPlayer() {
+      p1.classList.add("shadow");
+      p2.classList.remove("shadow");
+    }
+
+    function shadowClassSecondPlayer() {
+      p1.classList.remove("shadow");
+      p2.classList.add("shadow");
+    }
+
+    function drawX(integer) {
+      cell[integer] = 1;
+      element.innerHTML = "<img src='img/X.png' class='drawX'>";
+      if(somebodyWins(cell)){
+        setTimeout(() => alertShowed('Ganas jugador X'), 500);
+        score1 += 1;
+        pScore1.innerHTML = score1
+      } else if(theEnd(cell)){
+        alertShowed('Esto es un empate :D');
+      }
+      player1 = !player1;
+    }
+
+    function drawO(integer){
+      cell[integer] = 2;
+      element.innerHTML = "<img src='img/O.png' class='drawO'>";
+      if(somebodyWins(cell)){
+        score2 += 1;
+        pScore2.innerHTML = score2;
+        setTimeout(() => alertShowed('Ganas jugador O'), 500);
+      } else if(theEnd(cell)){
+        alertShowed('Esto es un empate :D');
+      }
+      player1 = !player1;
+    }
+
+    function alertShowed(str) {
+      swal({
+        title: `${str}`,
+        text: '¿Quieres jugar otro juego?',
+        showConfirmButton: true,
+        confirmButtonText: "Sí",
+        showCancelButton: true,
+        cancelButtonText: 'No'
+      }, (isConfirm) => {
+        if(isConfirm) initialGame()
+      })
+    }
+
+    function checkCell(integer, cell) {
+      if(cell[integer] == 1 || cell[integer] == 2) {
+        return false
+      } else {
+        return true
+      }
+    }
+
+    function theEnd(cell) {
+      for(let i = 0; i < 9; i++) {
+        if(cell[i] == 0) return false
+      }
+      score += 1;
+      tieScore.innerHTML = score;
+      return true
+    }
+
+    function somebodyWins(cell) {
+      //row
+      if(cell[0] == 1 && cell[1] == 1 && cell[2] == 1) return true
+      if(cell[0] == 2 && cell[1] == 2 && cell[2] == 2) return true
+      if(cell[3] == 1 && cell[4] == 1 && cell[5] == 1) return true
+      if(cell[3] == 2 && cell[4] == 2 && cell[5] == 2) return true
+      if(cell[6] == 1 && cell[7] == 1 && cell[8] == 1) return true
+      if(cell[6] == 2 && cell[7] == 2 && cell[8] == 2) return true
+      //Column
+      if(cell[0] == 1 && cell[3] == 1 && cell[6] == 1) return true
+      if(cell[0] == 2 && cell[3] == 2 && cell[6] == 2) return true
+      if(cell[1] == 1 && cell[4] == 1 && cell[7] == 1) return true
+      if(cell[1] == 2 && cell[4] == 2 && cell[7] == 2) return true
+      if(cell[2] == 1 && cell[5] == 1 && cell[8] == 1) return true
+      if(cell[2] == 2 && cell[5] == 2 && cell[8] == 2) return true
+
+      //Cross
+      if(cell[0] == 1 && cell[4] == 1 && cell[8] == 1) return true
+      if(cell[0] == 2 && cell[4] == 2 && cell[8] == 2) return true
+      if(cell[2] == 1 && cell[4] == 1 && cell[6] == 1) return true
+      if(cell[2] == 2 && cell[4] == 2 && cell[6] == 2) return true
+    }
+  </script>
+</body>
+</html>
