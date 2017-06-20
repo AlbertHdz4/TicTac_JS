@@ -19,10 +19,6 @@ body {
   color: white;
 }
 
-.hide {
-  display: none;
-}
-
 .header h1, .header h2 {
   width: 100%;
 }
@@ -161,11 +157,6 @@ h2 {
     text-align: center;
   }
 
-  .hide {
-    display: none;
-    background: none;
-  }
-
   .header > h1 {
     font-size: 1em;
     margin-bottom: 40px;
@@ -192,4 +183,8 @@ h2 {
     width: 28%;
     margin: 0;
   }
+}
+
+.hide {
+  display: none;
 }
