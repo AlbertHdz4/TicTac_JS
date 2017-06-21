@@ -186,6 +186,5 @@ h2 {
 }
 
 .hide {
-  z-index: -2;
-  background-color: red;
+  display: none
 }
