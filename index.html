@@ -11,11 +11,6 @@
   <title>Tic Tac Toe</title>
 </head>
 <body>
-  <header class="header" id="header">
-    <h1>Tic Tac Toe</h1>
-    <button type="button" name="button" onClick="initialGame()" id="button">Play!</button>
-    <h2>Developed By Alberto Hernández</h2>
-  </header>
   <div class="content" id="content">
     <div class="tictac">
       <div class="row1">
@@ -52,66 +47,93 @@
   </div>
   <script src="sweetalert.min.js"></script>
   <script>
-    // let listener = document.getElementById("button").addEventListener("click", initialGame);
-    let header = document.getElementById('header');
     let p1 = document.getElementById('player1');
     let p2 = document.getElementById('player2');
     let pScore1 = document.getElementById('score1');
     let pScore2 = document.getElementById('score3');
     let tieScore = document.getElementById('score2');
     let button = document.getElementById('button');
-    // var query = window.matchMedia("(max-width: 600px)");
     let cell = new Array(8);
     let score1 = 0, score2 = 0, score = 0;
-    let player1;
+    let player1, robot, player2;
     let element;
-    //
-    // mediaQuery();
-    // query.addListener(mediaQuery);
 
-    for(let i = 0; i < 9; i++) {
-      cell[i] = 0;
-      document.getElementById(`casilla${i}`).innerHTML = "<img src='' class=''>";
+    start();
+
+    function start() {
+      swal({
+        title: "Tic Tac Toe",
+        text: "Please, select players",
+        showCancelButton: true,
+        confirmButtonColor: "black",
+        confirmButtonText: "Two Players",
+        cancelButtonText: "One Player",
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          robot = false;
+          player2 = true;
+          initialGame(false)
+        } else {
+          robot = true;
+          initialGame(true)
+        }
+      });
     }
 
-    function initialGame() {
-      player1 = true;
-      header.style.display = 'none';
+    function initialGame(robot) {
+      clearBoard();
       shadowClassFirstPlayer();
-      for(let i = 0; i < 9; i++) {
-        cell[i] = 0;
-        document.getElementById(`casilla${i}`).innerHTML = "<img src='' class=''>";
+      if(robot) {
+        p2.innerHTML = "CPU O";
+        playRobot(cell);
       }
     }
 
     function play(integer) {
-      element = document.getElementById(`casilla${integer}`);
-      if(checkCell(integer, cell)) {
-        if(player1) {
-          drawX(integer);
-          shadowClassSecondPlayer();
-        } else {
-          drawO(integer);
-          shadowClassFirstPlayer();
+      if(checkCell(integer, cell) && !player1) {
+        drawO(integer);
+        if(robot) {
+          playRobot(cell);
         }
+      } else if(player2){
+        drawX(integer);
       }
     }
 
-    function shadowClassFirstPlayer() {
-      p1.classList.add("shadow");
-      p2.classList.remove("shadow");
+    function playRobot(cell) {
+      let cellRobot = generateNumber();
+      let cellCopy = cell;
+      console.log(`Esta es la variable generada en playRobot ${cellRobot}`);
+      if(checkCell(cellRobot, cellCopy)) {
+        console.log(`Se va a dibujar con la variable generada ${cellRobot}`)
+        drawX(cellRobot)
+      } else {
+        return playRobot();
+      }
     }
 
-    function shadowClassSecondPlayer() {
-      p1.classList.remove("shadow");
-      p2.classList.add("shadow");
+    function generateNumber() {
+      return Math.round(Math.random() * (8));
+    }
+
+    function checkCell(integer, cellCopy) {
+      console.log(cellCopy);
+      if(cell[integer] != 0) {
+        return false
+      } else {
+        return true
+      }
     }
 
     function drawX(integer) {
+      element = document.getElementById(`casilla${integer}`);
+      console.log(`El arreglo antes de drawX es ${cell}`)
       cell[integer] = 1;
+      console.log(`El arreglo despues de drawX es ${cell}`)
       element.innerHTML = "<img src='img/X.png' class='drawX'>";
       if(somebodyWins(cell)){
-        setTimeout(() => alertShowed('Player X wins'), 400);
+        setTimeout(() => alertShowed('Player X wins'), 3000);
         score1 += 1;
         pScore1.innerHTML = score1
       } else if(theEnd(cell)){
@@ -121,12 +143,13 @@
     }
 
     function drawO(integer){
+      element = document.getElementById(`casilla${integer}`);
       cell[integer] = 2;
       element.innerHTML = "<img src='img/O.png' class='drawO'>";
       if(somebodyWins(cell)){
         score2 += 1;
         pScore2.innerHTML = score2;
-        setTimeout(() => alertShowed('Player O Wins'), 400);
+        setTimeout(() => alertShowed('Player O Wins'), 3000);
       } else if(theEnd(cell)){
         alertShowed('It is a tie! :D');
       }
@@ -140,35 +163,9 @@
         showConfirmButton: true,
         confirmButtonText: "Yes",
       }, (isConfirm) => {
-        if(isConfirm) initialGame()
+        if(isConfirm) initialGame(robot)
       })
     }
-
-    function checkCell(integer, cell) {
-      if(cell[integer] == 1 || cell[integer] == 2) {
-        return false
-      } else {
-        return true
-      }
-    }
-
-    function theEnd(cell) {
-      for(let i = 0; i < 9; i++) {
-        if(cell[i] == 0) return false
-      }
-      score += 1;
-      tieScore.innerHTML = score;
-      return true
-    }
-
-    // function mediaQuery() {
-    //   if(query.matches) {
-    //     console.log("Se cumplio la condicion");
-    //     button.addEventListener("touchstart", function() {
-    //       header.classList.add("hide");
-    //     })
-    //   }
-    // }
 
     function somebodyWins(cell) {
       //row
@@ -191,6 +188,33 @@
       if(cell[0] == 2 && cell[4] == 2 && cell[8] == 2) return true
       if(cell[2] == 1 && cell[4] == 1 && cell[6] == 1) return true
       if(cell[2] == 2 && cell[4] == 2 && cell[6] == 2) return true
+    }
+
+    function clearBoard() {
+      for(let i = 0; i < 9; i++) {
+        cell[i] = 0;
+        document.getElementById(`casilla${i}`).innerHTML = "<img src='' class=''>";
+      }
+    }
+
+    function theEnd(cell) {
+      for(let i = 0; i < 9; i++) {
+        if(cell[i] == 0) return false
+      }
+      score += 1;
+      tieScore.innerHTML = score;
+      return true
+    }
+
+    function shadowClassFirstPlayer() {
+      player1 = true;
+      p1.classList.add("shadow");
+      p2.classList.remove("shadow");
+    }
+
+    function shadowClassSecondPlayer() {
+      p1.classList.remove("shadow");
+      p2.classList.add("shadow");
     }
   </script>
 </body>
