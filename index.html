@@ -69,6 +69,11 @@
     mediaQuery();
     query.addListener(mediaQuery);
 
+    for(let i = 0; i < 9; i++) {
+      cell[i] = 0;
+      document.getElementById(`casilla${i}`).innerHTML = "<img src='' class=''>";
+    }
+    
     function initialGame() {
       player1 = true;
       header.style.display = 'none';
@@ -159,11 +164,10 @@
     function mediaQuery() {
       if(query.matches) {
         console.log("Se cumplio la condicion");
-        button.addEventListener("touchstart", active)
-      } else {
-  			button.removeEventListener("touchstart", active);
-  			console.log("No se cumplio la condicion");
-  		}
+        button.addEventListener("touchstart", function() {
+          header.classList.add("hide");
+        })
+      }
     }
 
     function somebodyWins(cell) {
@@ -188,11 +192,6 @@
       if(cell[2] == 1 && cell[4] == 1 && cell[6] == 1) return true
       if(cell[2] == 2 && cell[4] == 2 && cell[6] == 2) return true
     }
-
-    function active() {
-      header.classList.add("hide");
-    }
-
   </script>
 </body>
 </html>
