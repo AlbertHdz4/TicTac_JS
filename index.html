@@ -91,6 +91,7 @@
     }
 
     function play(integer) {
+      if(somebodyWins(cell)) return alert('alguien gano')
       if(checkCell(integer, cell) && !player1) {
         drawO(integer);
         if(robot) {
@@ -102,6 +103,7 @@
     }
 
     function playRobot(cell) {
+      if(somebodyWins(cell)) return alert('alguien gano')
       let cellRobot = generateNumber();
       let cellCopy = cell;
       console.log(`Esta es la variable generada en playRobot ${cellRobot}`);
@@ -133,7 +135,7 @@
       console.log(`El arreglo despues de drawX es ${cell}`)
       element.innerHTML = "<img src='img/X.png' class='drawX'>";
       if(somebodyWins(cell)){
-        setTimeout(() => alertShowed('Player X wins'), 3000);
+        setTimeout(() => alertShowed('Player X wins'), 1500);
         score1 += 1;
         pScore1.innerHTML = score1
       } else if(theEnd(cell)){
@@ -149,7 +151,7 @@
       if(somebodyWins(cell)){
         score2 += 1;
         pScore2.innerHTML = score2;
-        setTimeout(() => alertShowed('Player O Wins'), 3000);
+        setTimeout(() => alertShowed('Player O Wins'), 1500);
       } else if(theEnd(cell)){
         alertShowed('It is a tie! :D');
       }
